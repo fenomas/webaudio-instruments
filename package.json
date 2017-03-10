@@ -4,8 +4,8 @@
   "description": "MIDI-like instruments from webaudio",
   "main": "index.js",
   "scripts": {
-    "build": "cd demo; webpack -p index.js bundle.js",
-    "test": "cd demo; webpack-dev-server -d --inline index.js"
+    "build": "cd docs; webpack -p index.js bundle.js",
+    "test": "cd docs; webpack-dev-server -d --inline index.js"
   },
   "repository": {
     "type": "git",
