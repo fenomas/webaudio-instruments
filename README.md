@@ -6,7 +6,7 @@ This is a simple wrapper for a subset of the functionality in
 It lets you play tones from MIDI-like instruments, but without any sound fonts
 or audio files - the tones are generated purely from WebAudio oscillators.
 
-> [Live demo](https://andyhall.github.io/webaudio-instruments/demo)
+> [Live demo](https://andyhall.github.io/webaudio-instruments/)
 
 ### Installation:
 
