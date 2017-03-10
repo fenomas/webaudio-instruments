@@ -1,0 +1,23 @@
+{
+  "name": "webaudio-instruments",
+  "version": "0.1.0",
+  "description": "MIDI-like instruments from webaudio",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd demo; webpack -p index.js bundle.js",
+    "test": "cd demo; webpack-dev-server -d --inline index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andyhall/webaudio-instruments"
+  },
+  "bugs": {
+    "url": "https://github.com/andyhall/webaudio-instruments/issues"
+  },
+  "devDependencies": {
+    "webpack": "^1.13.0",
+    "webpack-dev-server": "^1.14.1"
+  },
+  "author": "Andy Hall",
+  "license": "MIT"
+}
