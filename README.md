@@ -43,6 +43,8 @@ player.play(
  * `player.setQuality(q)`  
     Set the quality to `1` (high) or `0` (low). Low version uses fewer oscillators,
     see original repo for details.
+ * `player._synth`  
+    For anything else, access the underlying [tinysynth](https://github.com/g200kg/webaudio-tinysynth).
 
 ### Credit
 
