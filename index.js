@@ -30,11 +30,11 @@ function Player(audioContext, destination) {
 
 
     // merge instruments and drums into one big list
-    var instCt = instMax - instMin
-    var drumCt = drumMax - drumMin
+    var instCt = instMax - instMin + 1
+    var drumCt = drumMax - drumMin + 1
     var names = []
-    for (var i = 0; i <= instCt; i++) names.push(synth.getTimbreName(0, i + instMin))
-    for (var j = 0; j <= drumCt; j++) names.push(synth.getTimbreName(1, j + drumMin))
+    for (var i = 0; i < instCt; i++) names.push(synth.getTimbreName(0, i + instMin))
+    for (var j = 0; j < drumCt; j++) names.push(synth.getTimbreName(1, j + drumMin))
 
 
 
@@ -58,7 +58,7 @@ function Player(audioContext, destination) {
 
     this.play = function (inst, note, vel, delay, duration) {
         inst = inst || 0
-        if (inst < 0 || inst > drumCt + instCt) throw 'Invalid instrument'
+        if (inst < 0 || inst > instMax + drumCt) throw 'Invalid instrument'
         note = note || 60
         delay = delay || 0
         if (isNaN(vel)) vel = 0.5
@@ -69,7 +69,7 @@ function Player(audioContext, destination) {
 
 
     function play_impl(inst, note, vel, delay, duration) {
-        var isDrums = (inst > instCt)
+        var isDrums = (inst >= instCt)
         // may someday need to choose channels more cleverly
         // for now, always 0 for instruments, 9 for drums
         var channel
@@ -83,7 +83,7 @@ function Player(audioContext, destination) {
             synth.setProgram(channel, inst)
         }
         // play the note
-        var t = synth.getAudioContext().currentTime
+        var t = synth.actx.currentTime
         var intVel = (127 * vel) | 0
 
         // console.log([
