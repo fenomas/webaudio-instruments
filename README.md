@@ -25,7 +25,8 @@ player.play(
     72,        // note: midi number or frequency in Hz (if > 127)
     0.5,       // velocity: 0..1
     0,         // delay in seconds
-    0.5        // duration in seconds
+    0.5,       // duration in seconds
+    0.05       // (optional - override envelope "attack" parameter)
 )
 ```
 
@@ -35,9 +36,9 @@ player.play(
     Both parameters are optional.
  * `player.names`  
     Array of instrument names
- * `player.play(inst, note, vel, delay, duration)`  
+ * `player.play(inst, note, vel, delay, duration, attack)`  
     See above. Note that instruments numbers over 127 are percussion, 
-    so the `note` parameter is ignored.
+    so the `note` parameter is ignored. `attack` param is optional.
  * `player.getCurrentTime()`  
     Time value (from the audio context)
  * `player.setQuality(q)`  
