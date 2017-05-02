@@ -56,7 +56,7 @@ function Player(audioContext, destination) {
         return synth.actx.currentTime
     }
 
-    this.play = function (inst, note, vel, delay, duration) {
+    this.play = function (inst, note, vel, delay, duration, attack) {
         inst = inst || 0
         if (inst < 0 || inst > instMax + drumCt) throw 'Invalid instrument'
         note = note || 60
@@ -64,11 +64,11 @@ function Player(audioContext, destination) {
         if (isNaN(vel)) vel = 0.5
         if (isNaN(duration)) duration = 0.5
         if (delay < 0) delay = 0
-        play_impl(inst, note, vel, delay, duration)
+        play_impl(inst, note, vel, delay, duration, attack)
     }
 
 
-    function play_impl(inst, note, vel, delay, duration) {
+    function play_impl(inst, note, vel, delay, duration, attack) {
         var isDrums = (inst >= instCt)
         // may someday need to choose channels more cleverly
         // for now, always 0 for instruments, 9 for drums
@@ -94,38 +94,60 @@ function Player(audioContext, destination) {
         //     '   delay=', delay,
         // ].join(''))
 
-        // assume note is a frequency if it's above 127
-        if (note > 127) setFreq(channel, note)
+        var prog = synth.program[synth.pg[channel]].p
+
+        if (note > 127) {
+            // assume note is a frequency in Hz if it's above 127
+            overrideParameter(prog, 'f', note)
+            overrideParameter(prog, 't', 0)
+        }
+        if (attack) overrideParameter(prog, 'a', attack)
+
+        // actual play command
         synth.noteOn(channel, note, intVel, t + delay)
         synth.noteOff(channel, note, t + delay + duration)
-        if (note > 127) unsetFreq(channel)
+
+        // undo overrides
+        if (note > 127) {
+            undoOverride(prog, 'f')
+            undoOverride(prog, 't')
+        }
+        if (attack) undoOverride(prog, 'a')
+
     }
 
 
 
 
 
-    function setFreq(channel, freq) {
-        var prog = synth.program[synth.pg[channel]].p
-        prog.forEach(function (osc, i) {
-            if (osc.g !== 0) return
-            prevF[i] = osc.f
-            prevT[i] = osc.t
-            osc.f = freq
-            osc.t = 0
-        })
+    // temporarily override a program's parameters, for *source* oscillators
+    // e.g. override(0, 'f', 500) sets oscillator.f = 500 
+    // for all (oscillator.g==0), and caches overriden values
+
+    function overrideParameter(prog, param, value) {
+        var cache = overridden[param] || [0, 0, 0, 0, 0]
+        for (var i = 0; i < prog.length; i++) {
+            var osc = prog[i]
+            if (osc.g !== 0) continue
+            cache[i] = osc[param]
+            osc[param] = value
+        }
+        overridden[param] = cache
+    }
+    var overridden = {}
+
+    // undoes previous
+    function undoOverride(prog, param) {
+        var cache = overridden[param]
+        for (var i = 0; i < prog.length; i++) {
+            var osc = prog[i]
+            if (osc.g !== 0) continue
+            osc[param] = cache[i]
+        }
     }
 
-    function unsetFreq(channel) {
-        var prog = synth.program[synth.pg[channel]].p
-        prog.forEach(function (osc, i) {
-            if (osc.g !== 0) return
-            osc.f = prevF[i]
-            osc.t = prevT[i]
-        })
-    }
-    var prevF = []
-    var prevT = []
+
+
 
 
 }
