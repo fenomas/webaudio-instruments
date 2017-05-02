@@ -1,6 +1,6 @@
 {
   "name": "webaudio-instruments",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "MIDI-like instruments from webaudio",
   "main": "index.js",
   "scripts": {
