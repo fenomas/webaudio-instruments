@@ -68,17 +68,15 @@ function Player(audioContext, destination) {
     }
 
 
-    function play_impl(inst, note, vel, delay, duration, attack) {
+    function play_impl(inst, note, vel, delay, duration, channel, attack) {
         var isDrums = (inst >= instCt)
-        // may someday need to choose channels more cleverly
-        // for now, always 0 for instruments, 9 for drums
-        var channel
+        // use passed-in channel value, defaulting to 0
+        channel = channel | 0
         if (isDrums) {
             // drums use channel 9, and determine instrument based on the note
             channel = 9
             note = inst + drumMin - instCt
         } else {
-            channel = 0
             inst -= instMin
             synth.setProgram(channel, inst)
         }

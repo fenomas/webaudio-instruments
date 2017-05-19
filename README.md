@@ -26,6 +26,7 @@ player.play(
     0.5,       // velocity: 0..1
     0,         // delay in seconds
     0.5,       // duration in seconds
+    0,         // (optional - specify channel for tinysynth to use)
     0.05       // (optional - override envelope "attack" parameter)
 )
 ```
@@ -36,9 +37,9 @@ player.play(
     Both parameters are optional.
  * `player.names`  
     Array of instrument names
- * `player.play(inst, note, vel, delay, duration, attack)`  
+ * `player.play(inst, note, vel, delay, duration, channel, attack)`  
     See above. Note that instruments numbers over 127 are percussion, 
-    so the `note` parameter is ignored. `attack` param is optional.
+    so the `note` parameter is ignored. `channel`, `attack` params are optional.
  * `player.getCurrentTime()`  
     Time value (from the audio context)
  * `player.setQuality(q)`  
