@@ -56,7 +56,7 @@ function Player(audioContext, destination) {
         return synth.actx.currentTime
     }
 
-    this.play = function (inst, note, vel, delay, duration, attack) {
+    this.play = function (inst, note, vel, delay, duration, channel, attack) {
         inst = inst || 0
         if (inst < 0 || inst > instMax + drumCt) throw 'Invalid instrument'
         note = note || 60
@@ -64,7 +64,7 @@ function Player(audioContext, destination) {
         if (isNaN(vel)) vel = 0.5
         if (isNaN(duration)) duration = 0.5
         if (delay < 0) delay = 0
-        play_impl(inst, note, vel, delay, duration, attack)
+        play_impl(inst, note, vel, delay, duration, channel, attack)
     }
 
 
